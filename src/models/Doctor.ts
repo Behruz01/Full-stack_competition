@@ -13,6 +13,7 @@ const schema = new Schema(
     doctor_phone_number: {
       type: String,
       required: true,
+      unique: true,
     },
     doctor_image: {
       type: String,
@@ -46,6 +47,10 @@ const schema = new Schema(
       type: Schema.Types.ObjectId,
       require: true,
       ref: "Clinic",
+    },
+    role: {
+      type: String,
+      require: true,
     },
   },
   { timestamps: true }

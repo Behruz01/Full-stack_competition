@@ -18,4 +18,4 @@ const schema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-module.exports = (0, mongoose_1.model)("Admin", schema);
+exports.default = (0, mongoose_1.model)("Admin", schema);

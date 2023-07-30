@@ -2,26 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const schema = new mongoose_1.Schema({
-    clinic_name: {
-        type: String,
-        require: true,
-    },
-    clinic_about: {
+    potient_name: {
         type: String,
         required: true,
     },
-    clinic_address: {
-        type: String,
-        require: true,
-    },
-    clinic_image: {
+    potient_lname: {
         type: String,
         required: true,
     },
-    call_center: {
+    potient_age: {
         type: String,
-        require: true,
+        required: true,
+    },
+    potient_phone_number: {
+        type: String,
+        required: true,
         unique: true,
     },
-}, { timestamps: true });
-exports.default = (0, mongoose_1.model)("Clinic", schema);
+}, {
+    timestamps: true,
+});
+exports.default = (0, mongoose_1.model)("Potient", schema);

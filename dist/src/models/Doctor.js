@@ -13,6 +13,7 @@ const schema = new mongoose_1.Schema({
     doctor_phone_number: {
         type: String,
         required: true,
+        unique: true,
     },
     doctor_image: {
         type: String,
@@ -46,6 +47,10 @@ const schema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         require: true,
         ref: "Clinic",
+    },
+    role: {
+        type: String,
+        require: true,
     },
 }, { timestamps: true });
 exports.default = (0, mongoose_1.model)("Doctor", schema);

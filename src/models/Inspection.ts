@@ -10,7 +10,7 @@ const schema = new Schema(
     user_id: {
       type: Schema.Types.ObjectId,
       require: true,
-      ref: "User",
+      ref: "Potient",
     },
     inspection: {
       type: String,

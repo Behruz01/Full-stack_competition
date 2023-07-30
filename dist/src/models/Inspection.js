@@ -10,7 +10,7 @@ const schema = new mongoose_1.Schema({
     user_id: {
         type: mongoose_1.Schema.Types.ObjectId,
         require: true,
-        ref: "User",
+        ref: "Potient",
     },
     inspection: {
         type: String,
