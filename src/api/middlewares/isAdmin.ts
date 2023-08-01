@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { CustomError } from "../utils/custom-error";
 interface AdminRequest extends Request {
   verified?: {
     role: string;
@@ -11,7 +12,7 @@ const isAdmin = async (
   next: NextFunction
 ) => {
   if (!req.verified || req.verified.role !== "admin") {
-    return res.status(400).json({ message: "You are not admin" });
+    return new CustomError("You are not admin!", 400);
   }
   next();
 };

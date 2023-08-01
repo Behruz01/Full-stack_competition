@@ -4,17 +4,17 @@ const schema = new Schema(
   {
     service_name: {
       type: Schema.Types.ObjectId,
-      require: true,
+      required: true,
       ref: "Clinic",
     },
     doctor_name: {
       type: Schema.Types.ObjectId,
-      require: true,
+      required: true,
       ref: "Doctor",
     },
     queue_no: {
       type: Number,
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }

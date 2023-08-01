@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const clinic_controller_1 = require("../controllers/clinic.controller");
+const fileUpload_1 = require("../middlewares/fileUpload");
+const router = (0, express_1.Router)();
+router.post("/clinics", fileUpload_1.fileUpload, clinic_controller_1.createClinic);
+router.get("/clinics", clinic_controller_1.getClinics);
+router.put("/clinics/:id", clinic_controller_1.updateClinic);
+router.delete("/clinics/:id", clinic_controller_1.deleteClinic);
+router.get("/clinics/:id", clinic_controller_1.getOneClinic);
+exports.default = router;

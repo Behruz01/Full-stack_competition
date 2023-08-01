@@ -4,7 +4,7 @@ const schema = new Schema(
   {
     service_name: {
       type: String,
-      require: true,
+      required: true,
     },
     service_price: {
       type: String,
@@ -12,7 +12,7 @@ const schema = new Schema(
     },
     clinic_address: {
       type: Schema.Types.ObjectId,
-      require: true,
+      required: true,
       ref: "Clinic",
     },
   },

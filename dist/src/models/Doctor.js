@@ -4,11 +4,11 @@ const mongoose_1 = require("mongoose");
 const schema = new mongoose_1.Schema({
     doctor_name: {
         type: String,
-        require: true,
+        required: true,
     },
     doctor_lname: {
         type: String,
-        require: true,
+        required: true,
     },
     doctor_phone_number: {
         type: String,
@@ -21,36 +21,37 @@ const schema = new mongoose_1.Schema({
     },
     doctor_specialty: {
         type: String,
-        require: true,
+        required: true,
     },
     doctor_working_time: {
         type: String,
-        require: true,
+        required: true,
     },
     doctor_working_day: {
         type: String,
-        require: true,
+        required: true,
     },
     doctor_floor_no: {
         type: Number,
-        require: true,
+        required: true,
     },
     doctor_room_no: {
         type: Number,
-        require: true,
+        required: true,
     },
     doctor_qualification: {
-        type: Number,
-        require: true,
+        type: String,
+        required: true,
     },
-    doctor_clinic_adress: {
+    doctor_clinic_address: {
         type: mongoose_1.Schema.Types.ObjectId,
-        require: true,
+        required: true,
         ref: "Clinic",
     },
     role: {
         type: String,
-        require: true,
+        required: true,
+        default: "doctor",
     },
 }, { timestamps: true });
 exports.default = (0, mongoose_1.model)("Doctor", schema);

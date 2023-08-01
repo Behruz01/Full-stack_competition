@@ -11,13 +11,22 @@ const schema = new mongoose_1.Schema({
         required: true,
     },
     potient_age: {
-        type: String,
+        type: Number,
         required: true,
     },
     potient_phone_number: {
         type: String,
         required: true,
         unique: true,
+    },
+    potient_email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    potient_password: {
+        type: String,
+        required: true,
     },
 }, {
     timestamps: true,

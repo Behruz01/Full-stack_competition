@@ -28,21 +28,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importStar(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../../config/config"));
+const custom_error_1 = require("../utils/custom-error");
 const isAuth = async (req, res, next) => {
     const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
     if (!token) {
-        return res.status(403).json({ message: "Invalid token" });
+        return new custom_error_1.CustomError("Invalid token", 403);
     }
     jsonwebtoken_1.default.verify(token, config_1.default.SECRET_KEY, (err, data) => {
         if (err) {
             if (err instanceof jsonwebtoken_1.JsonWebTokenError) {
-                return res.status(401).json({ message: "Invalid Token" });
+                return new custom_error_1.CustomError("Invalid token!", 401);
             }
             else if (err instanceof jsonwebtoken_1.TokenExpiredError) {
-                return res.status(403).json({ message: "Token Expired" });
+                return new custom_error_1.CustomError("Token", 403);
             }
             else {
-                return res.status(500).json({ message: "Internal Server Error" });
+                return new custom_error_1.CustomError("Internal server error", 500);
             }
         }
         req.verified = data;

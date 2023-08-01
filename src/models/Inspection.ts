@@ -4,17 +4,17 @@ const schema = new Schema(
   {
     doctor_id: {
       type: Schema.Types.ObjectId,
-      require: true,
+      required: true,
       ref: "Doctor",
     },
     user_id: {
       type: Schema.Types.ObjectId,
-      require: true,
-      ref: "Potient",
+      required: true,
+      ref: "Patient",
     },
     inspection: {
       type: String,
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }

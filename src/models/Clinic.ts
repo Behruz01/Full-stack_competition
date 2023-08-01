@@ -4,7 +4,7 @@ const schema = new Schema(
   {
     clinic_name: {
       type: String,
-      require: true,
+      required: true,
     },
     clinic_about: {
       type: String,
@@ -12,7 +12,7 @@ const schema = new Schema(
     },
     clinic_address: {
       type: String,
-      require: true,
+      required: true,
     },
     clinic_image: {
       type: String,
@@ -20,7 +20,7 @@ const schema = new Schema(
     },
     call_center: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
   },

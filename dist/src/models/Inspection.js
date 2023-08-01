@@ -4,17 +4,17 @@ const mongoose_1 = require("mongoose");
 const schema = new mongoose_1.Schema({
     doctor_id: {
         type: mongoose_1.Schema.Types.ObjectId,
-        require: true,
+        required: true,
         ref: "Doctor",
     },
     user_id: {
         type: mongoose_1.Schema.Types.ObjectId,
-        require: true,
-        ref: "Potient",
+        required: true,
+        ref: "Patient",
     },
     inspection: {
         type: String,
-        require: true,
+        required: true,
     },
 }, { timestamps: true });
 exports.default = (0, mongoose_1.model)("Inspection", schema);

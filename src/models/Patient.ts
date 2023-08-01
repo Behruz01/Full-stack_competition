@@ -2,22 +2,31 @@ import { model, Schema } from "mongoose";
 
 const schema = new Schema(
   {
-    potient_name: {
+    patient_name: {
       type: String,
       required: true,
     },
-    potient_lname: {
+    patient_lname: {
       type: String,
       required: true,
     },
-    potient_age: {
-      type: String,
+    patient_age: {
+      type: Number,
       required: true,
     },
-    potient_phone_number: {
+    patient_phone_number: {
       type: String,
       required: true,
       unique: true,
+    },
+    patient_email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    patient_password: {
+      type: String,
+      required: true,
     },
   },
   {
@@ -25,4 +34,4 @@ const schema = new Schema(
   }
 );
 
-export default model("Potient", schema);
+export default model("Patient", schema);

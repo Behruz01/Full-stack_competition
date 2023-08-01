@@ -1,11 +1,17 @@
 import express, { Application } from "express";
+import cors from "cors";
+import fileUload from "express-fileupload";
 import { errorHandler } from "../api/middlewares/error-handler";
+import routes from "../api/routes/index";
 
 const modules = async (app: Application) => {
+  app.use(cors({ origin: "*" }));
+  app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-
-//   routes
-  app.use(errorHandler)
+  app.use(fileUload());
+  app.use(express.static(`${process.cwd()}/uploads`));
+  app.use("/api", routes);
+  app.use(errorHandler);
 };
 
 export default modules;
