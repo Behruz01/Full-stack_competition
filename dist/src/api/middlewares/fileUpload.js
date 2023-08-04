@@ -10,7 +10,7 @@ const fileUpload = (req, res, next) => {
     if (req.files) {
         const image = req.files?.image;
         if (!image)
-            return res.status(403).json({ message: "Image not found!" });
+            return res.status(401).json({ message: "Image not found!" });
         const extraname = path_1.default.extname(image.name);
         const imageName = `${(0, uuid_1.v4)()}${extraname}`;
         image.mv(`${process.cwd()}/uploads/${imageName}`);
@@ -20,7 +20,7 @@ const fileUpload = (req, res, next) => {
     else {
         const image = req.body?.image;
         if (!image)
-            return res.status(403).json({ message: "Image not found!" });
+            return res.status(401).json({ message: "Image not found!" });
         req.imageName = image;
         next();
     }

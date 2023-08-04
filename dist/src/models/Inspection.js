@@ -14,7 +14,7 @@ const schema = new mongoose_1.Schema({
         type: String,
         default: "pending",
     },
-    inspection_image: {
+    image: {
         type: String,
         default: "pending"
     },

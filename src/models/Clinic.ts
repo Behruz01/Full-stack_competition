@@ -13,7 +13,7 @@ const schema = new Schema(
       type: String,
       required: true,
     },
-    clinic_image: {
+    image: {
       type: String,
       required: true,
     },

@@ -62,7 +62,7 @@ export const updateClinic = async (
         clinic_about,
         clinic_address,
         call_center,
-        clinic_image: imageName,
+        image: imageName,
       },
     });
 

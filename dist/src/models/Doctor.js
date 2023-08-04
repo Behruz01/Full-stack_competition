@@ -15,7 +15,7 @@ const schema = new mongoose_1.Schema({
         required: true,
         unique: true,
     },
-    doctor_image: {
+    image: {
         type: String,
         required: true,
     },

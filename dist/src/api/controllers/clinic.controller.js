@@ -48,7 +48,7 @@ const updateClinic = async (req, res, next) => {
                 clinic_about,
                 clinic_address,
                 call_center,
-                clinic_image: imageName,
+                image: imageName,
             },
         });
         res.status(200).json({ message: "Updated successfully" });

@@ -48,7 +48,7 @@ const createInspection = async (req, res, next) => {
         const inspections = await Inspection_1.default.findByIdAndUpdate(inspectionId, {
             $set: {
                 inspection_desc,
-                inspection_image: image,
+                image: image,
                 inspection_status: "checked",
             },
         });
@@ -65,8 +65,10 @@ const theNextInspection = async (req, res, next) => {
     try {
         // const { doctorId } = req as CustomRequest;
         const doctorId = "64c8d8726bf500161d3114fb";
-        const { image } = req.imageName || {};
-        const inspections = (await Inspection_1.default.find({ inspection_status: "pending" }))[0];
+        // const { image } = req.imageName || {};
+        const inspections = (await Inspection_1.default.find({ inspection_status: "pending" }).sort({
+            createdAt: "asc",
+        }))[0];
         res.status(200).json({ data: inspections });
     }
     catch (error) {

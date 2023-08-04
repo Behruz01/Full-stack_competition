@@ -15,7 +15,7 @@ const schema = new Schema(
       required: true,
       unique: true,
     },
-    doctor_image: {
+    image: {
       type: String,
       required: true,
     },

@@ -37,7 +37,7 @@ export const createDoctor = async (
       doctor_room_no,
       doctor_qualification,
       doctor_clinic_address,
-      doctor_image: imageName,
+      image: imageName,
     });
 
     res.status(200).json({ message: "Created doctor" });
@@ -95,7 +95,7 @@ export const updateDoctor = async (
         doctor_room_no,
         doctor_qualification,
         doctor_clinic_address,
-        doctor_image: imageName,
+        image: imageName,
       },
     });
     res.status(200).json({ message: "Created doctor" });
@@ -130,7 +130,9 @@ export const getOneDoctor = async (
     const { id } = req.params;
     const doctor = await Doctor.findById(id);
     const number_of_queues = (await Inspection.find({ doctor: id })).length;
-    // const now = await Inspection.find({ doctor: id }).sort({inspection_status:"pending"});
+    // const now = await Inspection.find({ doctor: id }).sort({
+    //   inspection_status,
+    // });
     const data = {
       doctor,
       number_of_queues,
