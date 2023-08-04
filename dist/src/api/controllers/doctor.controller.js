@@ -87,6 +87,7 @@ const getOneDoctor = async (req, res, next) => {
         const { id } = req.params;
         const doctor = await Doctor_1.default.findById(id);
         const number_of_queues = (await Inspection_1.default.find({ doctor: id })).length;
+        // const now = await Inspection.find({ doctor: id }).sort({inspection_status:"pending"});
         const data = {
             doctor,
             number_of_queues,

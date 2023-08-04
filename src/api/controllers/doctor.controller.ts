@@ -130,7 +130,7 @@ export const getOneDoctor = async (
     const { id } = req.params;
     const doctor = await Doctor.findById(id);
     const number_of_queues = (await Inspection.find({ doctor: id })).length;
-    
+    // const now = await Inspection.find({ doctor: id }).sort({inspection_status:"pending"});
     const data = {
       doctor,
       number_of_queues,

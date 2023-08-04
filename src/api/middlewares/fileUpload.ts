@@ -1,7 +1,6 @@
 import { v4 as uuid } from "uuid";
 import path from "path";
 import { NextFunction, Request, Response } from "express";
-import { CustomError } from "../utils/custom-error";
 
 interface fileRequest extends Request {
   files?: any;
@@ -15,7 +14,7 @@ export const fileUpload = (
 ) => {
   if (req.files) {
     const image = req.files?.image;
-    if (!image) return new CustomError("Image not found", 400);
+    if (!image) return res.status(403).json({ message: "Image not found!" });
 
     const extraname = path.extname(image.name);
     const imageName = `${uuid()}${extraname}`;
@@ -26,7 +25,7 @@ export const fileUpload = (
   } else {
     const image = req.body?.image;
 
-    if (!image) return new CustomError("Image not found", 400);
+    if (!image) return res.status(403).json({ message: "Image not found!" });
 
     req.imageName = image;
     next();
