@@ -10,8 +10,7 @@ const Patient_1 = __importDefault(require("../../models/Patient"));
 const createQueue = async (req, res, next) => {
     try {
         const { id } = req.params;
-        // const { patientId } = req as CustomRequest
-        const patientId = "64cb5245ef68b9304c42e4c0";
+        const { patientId } = req;
         Inspection_1.default.create({ doctor: id, patient: patientId });
         res.status(201).json({ message: "Navbat olindi" });
     }
@@ -25,8 +24,7 @@ exports.createQueue = createQueue;
 const getQueue = async (req, res, next) => {
     try {
         const { id } = req.params;
-        // const { patientId } = req as CustomRequest;
-        const patientId = "64cb5245ef68b9304c42e4c0";
+        const { patientId } = req;
         const doctor = await Doctor_1.default.findById(id);
         const queue = (await Inspection_1.default.find({ doctor: id })).length;
         const patient = await Patient_1.default.findById(patientId);

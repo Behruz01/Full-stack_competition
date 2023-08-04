@@ -33,9 +33,8 @@ export const getOnePatientInfo = async (
   next: NextFunction
 ) => {
   try {
-    // const { doctorId } = req as CustomRequest;
+    const { doctorId } = req as CustomRequest;
     const { patientId } = req.params;
-    const doctorId = "64c8d8726bf500161d3114fb";
     const inspections = await Inspection.find({
       $and: [{ patient: patientId }, { doctor: doctorId }],
     });
@@ -55,11 +54,11 @@ export const createInspection = async (
   next: NextFunction
 ) => {
   try {
-    // const { doctorId } = req as CustomRequest;
+    const { doctorId } = req as CustomRequest;
     const { inspectionId } = req.params;
-    const doctorId = "64c8d8726bf500161d3114fb";
     const { imageName: image } = req;
     const { inspection_desc } = req.body;
+
     const inspections = await Inspection.findByIdAndUpdate(inspectionId, {
       $set: {
         inspection_desc,
@@ -82,9 +81,7 @@ export const theNextInspection = async (
   next: NextFunction
 ) => {
   try {
-    // const { doctorId } = req as CustomRequest;
-    const doctorId = "64c8d8726bf500161d3114fb";
-    // const { image } = req.imageName || {};
+    const { doctorId } = req as CustomRequest;
     const now = await Inspection.find({ doctor: doctorId }).sort({
       createdAt: "asc",
     });

@@ -32,7 +32,7 @@ export const patientLogin = async (
       throw new Error("SECRET_KEY is not defined in the config");
     }
 
-    const token = jwt.sign({ id: findPatient._id }, config.SECRET_KEY);
+    const token = jwt.sign({ patientId: findPatient._id }, config.SECRET_KEY);
     res.status(200).json({ token });
   } catch (error) {
     next(error);

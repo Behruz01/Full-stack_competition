@@ -14,8 +14,7 @@ export const createQueue = async (
 ) => {
   try {
     const { id } = req.params;
-    // const { patientId } = req as CustomRequest
-    const patientId = "64cb5245ef68b9304c42e4c0";
+    const { patientId } = req as CustomRequest;
 
     Inspection.create({ doctor: id, patient: patientId });
 
@@ -35,8 +34,7 @@ export const getQueue = async (
 ) => {
   try {
     const { id } = req.params;
-    // const { patientId } = req as CustomRequest;
-    const patientId = "64cb5245ef68b9304c42e4c0";
+    const { patientId } = req as CustomRequest;
 
     const doctor = await Doctor.findById(id);
     const queue = (await Inspection.find({ doctor: id })).length;

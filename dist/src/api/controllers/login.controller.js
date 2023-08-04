@@ -26,7 +26,7 @@ const patientLogin = async (req, res, next) => {
         if (!config_1.default.SECRET_KEY) {
             throw new Error("SECRET_KEY is not defined in the config");
         }
-        const token = jsonwebtoken_1.default.sign({ id: findPatient._id }, config_1.default.SECRET_KEY);
+        const token = jsonwebtoken_1.default.sign({ patientId: findPatient._id }, config_1.default.SECRET_KEY);
         res.status(200).json({ token });
     }
     catch (error) {
