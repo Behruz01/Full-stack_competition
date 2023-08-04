@@ -7,13 +7,12 @@ const schema = new Schema(
       required: true,
     },
     service_price: {
-      type: String,
+      type: Number,
       required: true,
     },
     clinic_address: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
-      ref: "Clinic",
     },
   },
   { timestamps: true }

@@ -5,6 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOneClinic = exports.deleteClinic = exports.updateClinic = exports.getClinics = exports.createClinic = void 0;
 const Clinic_1 = __importDefault(require("../../models/Clinic"));
+const Doctor_1 = __importDefault(require("../../models/Doctor"));
+const Service_1 = __importDefault(require("../../models/Service"));
 const createClinic = async (req, res, next) => {
     try {
         const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
@@ -72,10 +74,15 @@ exports.deleteClinic = deleteClinic;
 const getOneClinic = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const data = await Clinic_1.default.findById(id)
-            .populate("doctor_clinic_address")
-            .exec();
-        res.status(200).json({ data: data });
+        const clinic = await Clinic_1.default.findById(id);
+        const findDoctors = await Doctor_1.default.find({ doctor_clinic_address: id });
+        const findService = await Service_1.default.find({ clinic_address: id });
+        const newData = {
+            clinic,
+            doctors: findDoctors,
+            services: findService,
+        };
+        res.status(200).json({ data: newData });
     }
     catch (error) {
         console.log(error);

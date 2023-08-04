@@ -2,19 +2,24 @@ import { model, Schema } from "mongoose";
 
 const schema = new Schema(
   {
-    doctor_id: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "Doctor",
-    },
-    user_id: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "Patient",
-    },
-    inspection: {
+    doctor: {
       type: String,
       required: true,
+    },
+    patient: {
+      type: String,
+      required: true,
+    },
+    inspection_desc: {
+      type: String,
+      default: "pending",
+    },
+    inspection_image: {
+      type: String,
+    },
+    inspection_status: {
+      type: String,
+      default: "pending",
     },
   },
   { timestamps: true }

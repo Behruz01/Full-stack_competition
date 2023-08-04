@@ -44,9 +44,8 @@ const schema = new Schema(
       required: true,
     },
     doctor_clinic_address: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
-      ref: "Clinic",
     },
     role: {
       type: String,

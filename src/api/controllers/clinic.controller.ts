@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Clinic from "../../models/Clinic";
+import Doctor from "../../models/Doctor";
+import Service from "../../models/Service";
 
 interface CustomRequest extends Request {
   imageName: string;
@@ -18,6 +20,7 @@ export const createClinic = async (
       clinic_about,
       clinic_address,
       call_center,
+
       clinic_image: imageName,
     });
 
@@ -92,15 +95,22 @@ export const getOneClinic = async (
 ) => {
   try {
     const { id } = req.params;
+    
 
-    const data = await Clinic.findById(id)
-      .populate("doctor_clinic_address")
-      .exec();
+    const clinic = await Clinic.findById(id);
+    const findDoctors = await Doctor.find({ doctor_clinic_address: id });
+    const findService = await Service.find({ clinic_address: id });
+    const newData = {
+      clinic,
+      doctors: findDoctors,
+      services: findService,
+    };
 
-    res.status(200).json({ data: data });
+    res.status(200).json({ data: newData });
   } catch (error) {
     console.log(error);
 
     next(Error);
   }
 };
+

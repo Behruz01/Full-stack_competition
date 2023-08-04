@@ -44,9 +44,8 @@ const schema = new mongoose_1.Schema({
         required: true,
     },
     doctor_clinic_address: {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: String,
         required: true,
-        ref: "Clinic",
     },
     role: {
         type: String,

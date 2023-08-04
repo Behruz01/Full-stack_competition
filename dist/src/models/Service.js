@@ -7,13 +7,12 @@ const schema = new mongoose_1.Schema({
         required: true,
     },
     service_price: {
-        type: String,
+        type: Number,
         required: true,
     },
     clinic_address: {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: String,
         required: true,
-        ref: "Clinic",
     },
 }, { timestamps: true });
 exports.default = (0, mongoose_1.model)("Service", schema);

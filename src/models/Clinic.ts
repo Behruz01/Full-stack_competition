@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-
 const schema = new Schema(
   {
     clinic_name: {
@@ -26,4 +25,5 @@ const schema = new Schema(
   },
   { timestamps: true }
 );
+
 export default model("Clinic", schema);

@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const checkPatient_controller_1 = require("../controllers/checkPatient.controller");
+const router = (0, express_1.Router)();
+// router.post("/clinics", fileUpload, createClinic);
+router.get("/checkpaints", checkPatient_controller_1.getCheckPaint);
+// router.put("/clinics/:id", updateClinic);
+// router.delete("/clinics/:id", deleteClinic);
+router.get("/patientinfo/:patientId", checkPatient_controller_1.getOnePatientInfo);
+exports.default = router;

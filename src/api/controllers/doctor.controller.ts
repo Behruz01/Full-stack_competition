@@ -22,7 +22,7 @@ export const createDoctor = async (
       doctor_floor_no,
       doctor_room_no,
       doctor_qualification,
-      doctor_clinic_adress,
+      doctor_clinic_address,
     } = req.body;
     Doctor.create({
       doctor_name,
@@ -34,9 +34,10 @@ export const createDoctor = async (
       doctor_floor_no,
       doctor_room_no,
       doctor_qualification,
-      doctor_clinic_adress,
+      doctor_clinic_address,
       doctor_image: imageName,
     });
+
     res.status(200).json({ message: "Created doctor" });
   } catch (error) {
     next(error);
@@ -78,7 +79,7 @@ export const updateDoctor = async (
       doctor_floor_no,
       doctor_room_no,
       doctor_qualification,
-      doctor_clinic_adress,
+      doctor_clinic_address,
     } = req.body;
     Doctor.findByIdAndUpdate(id, {
       $set: {
@@ -91,7 +92,7 @@ export const updateDoctor = async (
         doctor_floor_no,
         doctor_room_no,
         doctor_qualification,
-        doctor_clinic_adress,
+        doctor_clinic_address,
         doctor_image: imageName,
       },
     });
@@ -129,6 +130,23 @@ export const getOneDoctor = async (
 
     res.status(200).json({ data });
   } catch (error) {
+    next(error);
+  }
+};
+// search
+export const searchDoctors = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const category = req.query.category;
+
+    const doctors = await Doctor.find({ doctor_specialty: category });
+
+    res.status(200).json({ doctors });
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 };

@@ -9,4 +9,5 @@ router.get("/doctors", doctor_controller_1.getAllDoctor);
 router.put("/doctor/:id", doctor_controller_1.updateDoctor);
 router.delete("/doctor/:id", doctor_controller_1.deleteDoctor);
 router.get("/doctor/:id", doctor_controller_1.getOneDoctor);
+router.post("/doctors/category", doctor_controller_1.searchDoctors);
 exports.default = router;
