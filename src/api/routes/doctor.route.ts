@@ -5,6 +5,7 @@ import {
   getAllDoctor,
   getOneDoctor,
   searchDoctors,
+  searchDoctorsCategory,
   updateDoctor,
 } from "../controllers/doctor.controller";
 import { fileUpload } from "../middlewares/fileUpload";
@@ -15,6 +16,7 @@ router.get("/doctors", getAllDoctor);
 router.put("/doctor/:id", updateDoctor);
 router.delete("/doctor/:id", deleteDoctor);
 router.get("/doctor/:id", getOneDoctor);
-router.post("/doctors/category", searchDoctors);
+router.post("/doctors/:category", searchDoctorsCategory);
+router.post("/doctors/:word", searchDoctors);
 
 export default router;

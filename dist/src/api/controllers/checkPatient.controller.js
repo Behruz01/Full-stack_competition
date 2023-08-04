@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.theNextInspection = exports.createInspection = exports.getOnePatientInfo = exports.getCheckPaint = void 0;
 const Inspection_1 = __importDefault(require("../../models/Inspection"));
+const Patient_1 = __importDefault(require("../../models/Patient"));
 const getCheckPaint = async (req, res, next) => {
     try {
-        // const { doctorId } = req as CustomRequest;
-        const doctorId = "64c8d8726bf500161d3114fb";
+        const { doctorId } = req;
         const patients = await Inspection_1.default.find({ doctor: doctorId }).sort({
             createdAt: "asc",
         });
@@ -43,7 +43,7 @@ const createInspection = async (req, res, next) => {
         // const { doctorId } = req as CustomRequest;
         const { inspectionId } = req.params;
         const doctorId = "64c8d8726bf500161d3114fb";
-        const { image } = req.imageName || {};
+        const { imageName: image } = req;
         const { inspection_desc } = req.body;
         const inspections = await Inspection_1.default.findByIdAndUpdate(inspectionId, {
             $set: {
@@ -66,10 +66,18 @@ const theNextInspection = async (req, res, next) => {
         // const { doctorId } = req as CustomRequest;
         const doctorId = "64c8d8726bf500161d3114fb";
         // const { image } = req.imageName || {};
-        const inspections = (await Inspection_1.default.find({ inspection_status: "pending" }).sort({
+        const now = await Inspection_1.default.find({ doctor: doctorId }).sort({
             createdAt: "asc",
-        }))[0];
-        res.status(200).json({ data: inspections });
+        });
+        const one = now.find((p) => p.inspection_status == "pending");
+        const { patient } = one || { key: "Bemor yoq" };
+        const patientInfo = await Patient_1.default.findById(patient);
+        const infoPatientIns = await Inspection_1.default.find({ patient: patient });
+        const data = {
+            patientInfo,
+            infoPatientIns,
+        };
+        res.status(200).json(data);
     }
     catch (error) {
         console.log(error);

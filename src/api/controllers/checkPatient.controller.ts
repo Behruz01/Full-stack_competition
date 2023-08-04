@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Inspection from "../../models/Inspection";
+import Patient from "../../models/Patient";
 
 interface CustomRequest extends Request {
   doctorId?: string;
@@ -13,8 +14,7 @@ export const getCheckPaint = async (
   next: NextFunction
 ) => {
   try {
-    // const { doctorId } = req as CustomRequest;
-    const doctorId = "64c8d8726bf500161d3114fb";
+    const { doctorId } = req as CustomRequest;
     const patients = await Inspection.find({ doctor: doctorId }).sort({
       createdAt: "asc",
     });
@@ -58,7 +58,7 @@ export const createInspection = async (
     // const { doctorId } = req as CustomRequest;
     const { inspectionId } = req.params;
     const doctorId = "64c8d8726bf500161d3114fb";
-    const { image } = req.imageName || {};
+    const { imageName: image } = req;
     const { inspection_desc } = req.body;
     const inspections = await Inspection.findByIdAndUpdate(inspectionId, {
       $set: {
@@ -85,13 +85,19 @@ export const theNextInspection = async (
     // const { doctorId } = req as CustomRequest;
     const doctorId = "64c8d8726bf500161d3114fb";
     // const { image } = req.imageName || {};
-    const inspections = (
-      await Inspection.find({ inspection_status: "pending" }).sort({
-        createdAt: "asc",
-      })
-    )[0];
+    const now = await Inspection.find({ doctor: doctorId }).sort({
+      createdAt: "asc",
+    });
+    const one = now.find((p) => p.inspection_status == "pending");
+    const { patient } = one || { key: "Bemor yoq" };
+    const patientInfo = await Patient.findById(patient);
 
-    res.status(200).json({ data: inspections });
+    const infoPatientIns = await Inspection.find({ patient: patient });
+    const data = {
+      patientInfo,
+      infoPatientIns,
+    };
+    res.status(200).json(data);
   } catch (error) {
     console.log(error);
     next(error);

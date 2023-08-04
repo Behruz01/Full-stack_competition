@@ -5,6 +5,7 @@ import { CustomError } from "../utils/custom-error";
 import jwt from "jsonwebtoken";
 import config from "../../../config/config";
 import Doctor from "../../models/Doctor";
+import Clinic from "../../models/Clinic";
 
 export const patientLogin = async (
   req: Request,
@@ -48,7 +49,23 @@ export const doctorLogin = async (
     const findDoctor = await Doctor.findOne({
       doctor_phone_number: phone_number,
     });
-    console.log(findDoctor);
+    const findClinic = await Clinic.findOne({ clinic_name: clinic });
+    if (!findDoctor)
+      return res.status(403).json({ message: "Invalid phone number" });
+
+    if (
+      findDoctor.doctor_clinic_address.toString() !== findClinic?.id.toString()
+    )
+      return res
+        .status(403)
+        .json({ message: "Siz bu klinikada ro'yxatdan o'tmagansiz" });
+
+    if (!config.SECRET_KEY) {
+      throw new Error("SECRET_KEY is not defined in the config");
+    }
+
+    const token = jwt.sign({ doctorId: findDoctor._id }, config.SECRET_KEY);
+    res.status(200).json({ token });
   } catch (error) {
     next(error);
   }

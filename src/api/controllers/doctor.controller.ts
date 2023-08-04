@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Doctor from "../../models/Doctor";
 import Inspection from "../../models/Inspection";
-import Queue from "../../models/Inspection";
+import Patient from "../../models/Patient";
 
 interface CustomRequest extends Request {
   imageName: string;
@@ -12,7 +12,7 @@ export const createDoctor = async (
   next: NextFunction
 ) => {
   try {
-    const { imageName } = req as CustomRequest;
+    const { imageName: image } = req as CustomRequest;
 
     const {
       doctor_name,
@@ -37,7 +37,7 @@ export const createDoctor = async (
       doctor_room_no,
       doctor_qualification,
       doctor_clinic_address,
-      image: imageName,
+      image: image,
     });
 
     res.status(200).json({ message: "Created doctor" });
@@ -69,7 +69,7 @@ export const updateDoctor = async (
 ) => {
   try {
     const { id } = req.params;
-    const { imageName } = req as CustomRequest;
+    const { imageName: image } = req as CustomRequest;
 
     const {
       doctor_name,
@@ -95,7 +95,7 @@ export const updateDoctor = async (
         doctor_room_no,
         doctor_qualification,
         doctor_clinic_address,
-        image: imageName,
+        image: image,
       },
     });
     res.status(200).json({ message: "Created doctor" });
@@ -129,13 +129,22 @@ export const getOneDoctor = async (
   try {
     const { id } = req.params;
     const doctor = await Doctor.findById(id);
+    //
     const number_of_queues = (await Inspection.find({ doctor: id })).length;
-    // const now = await Inspection.find({ doctor: id }).sort({
-    //   inspection_status,
-    // });
+    const now = await Inspection.find({ doctor: id }).sort({
+      createdAt: "asc",
+    });
+
+    const one = now.find((p) => p.inspection_status == "pending");
+    const { patient } = one || { key: "Bemor yoq" };
+
+    const nowOne = await Patient.findById(patient);
+    //
+
     const data = {
       doctor,
       number_of_queues,
+      now: nowOne,
     };
 
     res.status(200).json({ data });
@@ -144,15 +153,36 @@ export const getOneDoctor = async (
   }
 };
 // search by category
+export const searchDoctorsCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const category = req.params.category;
+
+    const doctors = await Doctor.find({ doctor_specialty: category });
+
+    res.status(200).json({ doctors });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+// search by name or lname
+
 export const searchDoctors = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const category = req.query.category;
+    const word = req.query;
 
-    const doctors = await Doctor.find({ doctor_specialty: category });
+    const doctors = await Doctor.find({
+      $or: [{ doctor_name: word }, { doctor_lname: word }],
+    });
 
     res.status(200).json({ doctors });
   } catch (error) {

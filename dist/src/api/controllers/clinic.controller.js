@@ -10,13 +10,13 @@ const Service_1 = __importDefault(require("../../models/Service"));
 const createClinic = async (req, res, next) => {
     try {
         const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
-        const { image } = req.imageName || {};
+        const { imageName: image } = req;
         Clinic_1.default.create({
             clinic_name,
             clinic_about,
             clinic_address,
             call_center,
-            clinic_image: image,
+            image: image,
         });
         res.status(201).json({ message: "Clinic created successfully" });
     }
@@ -41,14 +41,14 @@ const updateClinic = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
-        const { imageName } = req;
+        const { imageName: image } = req;
         await Clinic_1.default.findByIdAndUpdate(id, {
             $set: {
                 clinic_name,
                 clinic_about,
                 clinic_address,
                 call_center,
-                image: imageName,
+                image: image,
             },
         });
         res.status(200).json({ message: "Updated successfully" });

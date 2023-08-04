@@ -10,6 +10,7 @@ const custom_error_1 = require("../utils/custom-error");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../../config/config"));
 const Doctor_1 = __importDefault(require("../../models/Doctor"));
+const Clinic_1 = __importDefault(require("../../models/Clinic"));
 const patientLogin = async (req, res, next) => {
     try {
         const { patient_email, patient_password } = req.body;
@@ -39,7 +40,18 @@ const doctorLogin = async (req, res, next) => {
         const findDoctor = await Doctor_1.default.findOne({
             doctor_phone_number: phone_number,
         });
-        console.log(findDoctor);
+        const findClinic = await Clinic_1.default.findOne({ clinic_name: clinic });
+        if (!findDoctor)
+            return res.status(403).json({ message: "Invalid phone number" });
+        if (findDoctor.doctor_clinic_address.toString() !== findClinic?.id.toString())
+            return res
+                .status(403)
+                .json({ message: "Siz bu klinikada ro'yxatdan o'tmagansiz" });
+        if (!config_1.default.SECRET_KEY) {
+            throw new Error("SECRET_KEY is not defined in the config");
+        }
+        const token = jsonwebtoken_1.default.sign({ doctorId: findDoctor._id }, config_1.default.SECRET_KEY);
+        res.status(200).json({ token });
     }
     catch (error) {
         next(error);
