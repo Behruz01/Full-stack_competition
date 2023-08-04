@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchDoctors = exports.getOneDoctor = exports.deleteDoctor = exports.updateDoctor = exports.getAllDoctor = exports.createDoctor = void 0;
 const Doctor_1 = __importDefault(require("../../models/Doctor"));
+const Inspection_1 = __importDefault(require("../../models/Inspection"));
 const createDoctor = async (req, res, next) => {
     try {
         const { imageName } = req;
@@ -84,7 +85,12 @@ exports.deleteDoctor = deleteDoctor;
 const getOneDoctor = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const data = await Doctor_1.default.findById(id);
+        const doctor = await Doctor_1.default.findById(id);
+        const number_of_queues = (await Inspection_1.default.find({ doctor: id })).length;
+        const data = {
+            doctor,
+            number_of_queues,
+        };
         res.status(200).json({ data });
     }
     catch (error) {
@@ -92,7 +98,7 @@ const getOneDoctor = async (req, res, next) => {
     }
 };
 exports.getOneDoctor = getOneDoctor;
-// search
+// search by category
 const searchDoctors = async (req, res, next) => {
     try {
         const category = req.query.category;

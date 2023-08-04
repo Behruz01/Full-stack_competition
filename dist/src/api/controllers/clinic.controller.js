@@ -10,13 +10,13 @@ const Service_1 = __importDefault(require("../../models/Service"));
 const createClinic = async (req, res, next) => {
     try {
         const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
-        const { imageName } = req;
+        const { image } = req.imageName || {};
         Clinic_1.default.create({
             clinic_name,
             clinic_about,
             clinic_address,
             call_center,
-            clinic_image: imageName,
+            clinic_image: image,
         });
         res.status(201).json({ message: "Clinic created successfully" });
     }

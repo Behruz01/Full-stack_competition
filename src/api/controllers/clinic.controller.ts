@@ -4,24 +4,26 @@ import Doctor from "../../models/Doctor";
 import Service from "../../models/Service";
 
 interface CustomRequest extends Request {
-  imageName: string;
+  imageName?: {
+    image?: string;
+  };
 }
 
 export const createClinic = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
-    const { imageName } = req as CustomRequest;
+    const { image } = req.imageName || {};
     Clinic.create({
       clinic_name,
       clinic_about,
       clinic_address,
       call_center,
 
-      clinic_image: imageName,
+      clinic_image: image,
     });
 
     res.status(201).json({ message: "Clinic created successfully" });
@@ -95,7 +97,6 @@ export const getOneClinic = async (
 ) => {
   try {
     const { id } = req.params;
-    
 
     const clinic = await Clinic.findById(id);
     const findDoctors = await Doctor.find({ doctor_clinic_address: id });
@@ -113,4 +114,3 @@ export const getOneClinic = async (
     next(Error);
   }
 };
-

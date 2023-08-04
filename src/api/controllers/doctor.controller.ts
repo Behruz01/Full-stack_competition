@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Doctor from "../../models/Doctor";
+import Inspection from "../../models/Inspection";
+import Queue from "../../models/Inspection";
 
 interface CustomRequest extends Request {
   imageName: string;
@@ -126,14 +128,20 @@ export const getOneDoctor = async (
 ) => {
   try {
     const { id } = req.params;
-    const data = await Doctor.findById(id);
+    const doctor = await Doctor.findById(id);
+    const number_of_queues = (await Inspection.find({ doctor: id })).length;
+    
+    const data = {
+      doctor,
+      number_of_queues,
+    };
 
     res.status(200).json({ data });
   } catch (error) {
     next(error);
   }
 };
-// search
+// search by category
 export const searchDoctors = async (
   req: Request,
   res: Response,

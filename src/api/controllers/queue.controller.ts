@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Doctor from "../../models/Doctor";
-import Inspection from "../../models/Queue";
+import Inspection from "../../models/Inspection";
 import Patient from "../../models/Patient";
 
 interface CustomRequest {

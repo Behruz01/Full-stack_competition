@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import Inspection from "../../models/Queue";
+import Inspection from "../../models/Inspection";
 
 interface CustomRequest extends Request {
   doctorId?: string;
@@ -64,7 +64,7 @@ export const createInspection = async (
       $set: {
         inspection_desc,
         inspection_image: image,
-        inspection_status:"checked"
+        inspection_status: "checked",
       },
     });
 
@@ -85,7 +85,9 @@ export const theNextInspection = async (
     // const { doctorId } = req as CustomRequest;
     const doctorId = "64c8d8726bf500161d3114fb";
     const { image } = req.imageName || {};
-    const inspections = (await Inspection.find({ inspection_status: "pending" }))[0];
+    const inspections = (
+      await Inspection.find({ inspection_status: "pending" })
+    )[0];
 
     res.status(200).json({ data: inspections });
   } catch (error) {
