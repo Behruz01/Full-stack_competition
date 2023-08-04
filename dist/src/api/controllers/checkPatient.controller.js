@@ -3,15 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOnePatientInfo = exports.getCheckPaint = void 0;
-const Inspection_1 = __importDefault(require("../../models/Inspection"));
-const Patient_1 = __importDefault(require("../../models/Patient"));
+exports.theNextInspection = exports.createInspection = exports.getOnePatientInfo = exports.getCheckPaint = void 0;
+const Queue_1 = __importDefault(require("../../models/Queue"));
 const getCheckPaint = async (req, res, next) => {
     try {
         // const { doctorId } = req as CustomRequest;
         const doctorId = "64c8d8726bf500161d3114fb";
-        const patients = await Inspection_1.default.find({ doctor: doctorId });
-        const users = await Patient_1.default.find();
+        const patients = await Queue_1.default.find({ doctor: doctorId }).sort({
+            createdAt: "asc",
+        });
         res.status(200).json({ patients });
     }
     catch (error) {
@@ -24,10 +24,9 @@ exports.getCheckPaint = getCheckPaint;
 const getOnePatientInfo = async (req, res, next) => {
     try {
         // const { doctorId } = req as CustomRequest;
-        // const { patientId } = req.params;
+        const { patientId } = req.params;
         const doctorId = "64c8d8726bf500161d3114fb";
-        const patientId = "64c7b32987dce3b702f38fd8";
-        const inspections = await Inspection_1.default.find({
+        const inspections = await Queue_1.default.find({
             $and: [{ patient: patientId }, { doctor: doctorId }],
         });
         res.status(200).json({ inspections });
@@ -38,3 +37,41 @@ const getOnePatientInfo = async (req, res, next) => {
     }
 };
 exports.getOnePatientInfo = getOnePatientInfo;
+// create inspection and image
+const createInspection = async (req, res, next) => {
+    try {
+        // const { doctorId } = req as CustomRequest;
+        const { inspectionId } = req.params;
+        const doctorId = "64c8d8726bf500161d3114fb";
+        const { image } = req.imageName || {};
+        const { inspection_desc } = req.body;
+        const inspections = await Queue_1.default.findByIdAndUpdate(inspectionId, {
+            $set: {
+                inspection_desc,
+                inspection_image: image,
+                inspection_status: "checked"
+            },
+        });
+        res.status(200).json({ message: "Tashxis qo'yildi" });
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+exports.createInspection = createInspection;
+// the next one
+const theNextInspection = async (req, res, next) => {
+    try {
+        // const { doctorId } = req as CustomRequest;
+        const doctorId = "64c8d8726bf500161d3114fb";
+        const { image } = req.imageName || {};
+        const inspections = (await Queue_1.default.find({ inspection_status: "pending" }))[0];
+        res.status(200).json({ data: inspections });
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+exports.theNextInspection = theNextInspection;

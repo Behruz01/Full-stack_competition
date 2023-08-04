@@ -5,14 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getQueue = exports.createQueue = void 0;
 const Doctor_1 = __importDefault(require("../../models/Doctor"));
-const Inspection_1 = __importDefault(require("../../models/Inspection"));
+const Queue_1 = __importDefault(require("../../models/Queue"));
 const Patient_1 = __importDefault(require("../../models/Patient"));
 const createQueue = async (req, res, next) => {
     try {
         const { id } = req.params;
         // const { patientId } = req as CustomRequest
         const patientId = "64cb5245ef68b9304c42e4c0";
-        Inspection_1.default.create({ doctor: id, patient: patientId });
+        Queue_1.default.create({ doctor: id, patient: patientId });
         res.status(201).json({ message: "Navbat olindi" });
     }
     catch (error) {
@@ -28,9 +28,9 @@ const getQueue = async (req, res, next) => {
         // const { patientId } = req as CustomRequest;
         const patientId = "64cb5245ef68b9304c42e4c0";
         const doctor = await Doctor_1.default.findById(id);
-        const queue = (await Inspection_1.default.find({ doctor: id })).length;
+        const queue = (await Queue_1.default.find({ doctor: id })).length;
         const patient = await Patient_1.default.findById(patientId);
-        const inspection = (await Inspection_1.default.find({
+        const inspection = (await Queue_1.default.find({
             $and: [
                 { patient: patientId },
                 { inspection_status: "checked" },
