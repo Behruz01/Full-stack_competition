@@ -7,10 +7,20 @@ exports.searchClinic = exports.getOneClinic = exports.deleteClinic = exports.upd
 const Clinic_1 = __importDefault(require("../../models/Clinic"));
 const Doctor_1 = __importDefault(require("../../models/Doctor"));
 const Service_1 = __importDefault(require("../../models/Service"));
+// regex
+const validatePhoneNumber = (phoneNumber) => {
+    const regex = /^\+9989\d{8}$/;
+    return regex.test(phoneNumber);
+};
 const createClinic = async (req, res, next) => {
     try {
         const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
         const { imageName: image } = req;
+        const isvalid = validatePhoneNumber(call_center);
+        if (!isvalid)
+            return res
+                .status(400)
+                .json({ message: "To'g'ri telefon raqam kiriting!" });
         Clinic_1.default.create({
             clinic_name,
             clinic_about,
@@ -42,6 +52,11 @@ const updateClinic = async (req, res, next) => {
         const { id } = req.params;
         const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
         const { imageName: image } = req;
+        const isvalid = validatePhoneNumber(call_center);
+        if (!isvalid)
+            return res
+                .status(400)
+                .json({ message: "To'g'ri telefon raqam kiriting!" });
         await Clinic_1.default.findByIdAndUpdate(id, {
             $set: {
                 clinic_name,

@@ -8,6 +8,11 @@ interface CustomRequest extends Request {
     image?: string;
   };
 }
+// regex
+const validatePhoneNumber = (phoneNumber: string): boolean => {
+  const regex = /^\+9989\d{8}$/;
+  return regex.test(phoneNumber);
+};
 
 export const createClinic = async (
   req: CustomRequest,
@@ -17,6 +22,12 @@ export const createClinic = async (
   try {
     const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
     const { imageName: image } = req;
+    const isvalid = validatePhoneNumber(call_center);
+    if (!isvalid)
+      return res
+        .status(400)
+        .json({ message: "To'g'ri telefon raqam kiriting!" });
+
     Clinic.create({
       clinic_name,
       clinic_about,
@@ -55,6 +66,12 @@ export const updateClinic = async (
     const { id } = req.params;
     const { clinic_name, clinic_about, clinic_address, call_center } = req.body;
     const { imageName: image } = req as CustomRequest;
+
+    const isvalid = validatePhoneNumber(call_center);
+    if (!isvalid)
+      return res
+        .status(400)
+        .json({ message: "To'g'ri telefon raqam kiriting!" });
     await Clinic.findByIdAndUpdate(id, {
       $set: {
         clinic_name,
