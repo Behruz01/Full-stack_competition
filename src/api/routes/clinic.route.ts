@@ -1,13 +1,20 @@
 import { Router } from "express";
-import { createClinic, deleteClinic, getClinics, getOneClinic, updateClinic } from "../controllers/clinic.controller";
+import {
+  createClinic,
+  deleteClinic,
+  getClinics,
+  getOneClinic,
+  updateClinic,
+} from "../controllers/clinic.controller";
 import { fileUpload } from "../middlewares/fileUpload";
+import { isAdmin } from "../middlewares/isAdmin";
+import { isAuth } from "../middlewares/isAuth";
 const router = Router();
 
-router.post("/clinics", fileUpload, createClinic);
+router.post("/clinics", isAuth, isAdmin, fileUpload, createClinic);
 router.get("/clinics", getClinics);
-router.put("/clinics/:id", updateClinic);
-router.delete("/clinics/:id", deleteClinic);
+router.put("/clinics/:id", isAuth, isAdmin, updateClinic);
+router.delete("/clinics/:id", isAuth, isAdmin, deleteClinic);
 router.get("/clinics/:id", getOneClinic);
-
 
 export default router;

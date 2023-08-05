@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import config from "../../../config/config";
-import { CustomError } from "../utils/custom-error";
 
 interface CustomRequest extends Request {
   verified?: Object;
 }
 
-const isAuth = async (
+export const isAuth = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -16,7 +15,7 @@ const isAuth = async (
     req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
-    return new CustomError("Invalid token", 403);
+    return res.status(401).json({ message: "Invalid token" });
   }
 
   jwt.verify(
@@ -25,11 +24,11 @@ const isAuth = async (
     (err: Error | null, data) => {
       if (err) {
         if (err instanceof JsonWebTokenError) {
-          return new CustomError("Invalid token!", 401);
+          return res.status(401).json({ message: "Invalid token!" });
         } else if (err instanceof TokenExpiredError) {
-          return new CustomError("Token", 403);
+          return res.status(401).json({ message: "Token" });
         } else {
-          return new CustomError("Internal server error", 500);
+          return res.status(500).json({ message: "Internal server error" });
         }
       }
       req.verified = data;
@@ -37,5 +36,3 @@ const isAuth = async (
     }
   );
 };
-
-export default isAuth;

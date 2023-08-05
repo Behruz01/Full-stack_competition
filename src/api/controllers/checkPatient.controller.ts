@@ -3,9 +3,11 @@ import Inspection from "../../models/Inspection";
 import Patient from "../../models/Patient";
 
 interface CustomRequest extends Request {
-  doctorId?: string;
+  verified?: {
+    patientId?: string;
+  };
   imageName?: {
-    image: string;
+    image?: string;
   };
 }
 export const getCheckPaint = async (
@@ -14,7 +16,8 @@ export const getCheckPaint = async (
   next: NextFunction
 ) => {
   try {
-    const { doctorId } = req as CustomRequest;
+    const { verified: doctorId } = req as CustomRequest;
+
     const patients = await Inspection.find({ doctor: doctorId }).sort({
       createdAt: "asc",
     });
@@ -33,7 +36,7 @@ export const getOnePatientInfo = async (
   next: NextFunction
 ) => {
   try {
-    const { doctorId } = req as CustomRequest;
+    const { verified: doctorId } = req as CustomRequest;
     const { patientId } = req.params;
     const inspections = await Inspection.find({
       $and: [{ patient: patientId }, { doctor: doctorId }],
@@ -54,7 +57,6 @@ export const createInspection = async (
   next: NextFunction
 ) => {
   try {
-    const { doctorId } = req as CustomRequest;
     const { inspectionId } = req.params;
     const { imageName: image } = req;
     const { inspection_desc } = req.body;
@@ -81,7 +83,7 @@ export const theNextInspection = async (
   next: NextFunction
 ) => {
   try {
-    const { doctorId } = req as CustomRequest;
+    const { verified: doctorId } = req as CustomRequest;
     const now = await Inspection.find({ doctor: doctorId }).sort({
       createdAt: "asc",
     });

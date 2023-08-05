@@ -5,11 +5,14 @@ import {
   getOnePatientInfo,
   theNextInspection,
 } from "../controllers/checkPatient.controller";
+import { fileUpload } from "../middlewares/fileUpload";
+import { isAuth } from "../middlewares/isAuth";
+import { isDoctor } from "../middlewares/isDoctor";
 const router = Router();
 
-router.post("/nextinspection", theNextInspection);
-router.get("/checkpaints", getCheckPaint);
-router.put("/inspection/:inspectionId", createInspection);
-router.get("/patientinfo/:patientId", getOnePatientInfo);
+router.post("/nextinspection", isAuth, isDoctor, theNextInspection);
+router.get("/checkpaints", isAuth, isDoctor, getCheckPaint);
+router.put("/inspection/:inspectionId", fileUpload, createInspection);
+router.get("/patientinfo/:patientId", isAuth, isDoctor, getOnePatientInfo);
 
 export default router;

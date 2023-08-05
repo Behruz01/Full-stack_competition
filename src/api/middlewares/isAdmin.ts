@@ -6,15 +6,13 @@ interface AdminRequest extends Request {
   };
 }
 
-const isAdmin = async (
+export const isAdmin = async (
   req: AdminRequest,
   res: Response,
   next: NextFunction
 ) => {
   if (!req.verified || req.verified.role !== "admin") {
-    return new CustomError("You are not admin!", 400);
+    return res.status(400).json("You are not admin!");
   }
   next();
 };
-
-module.exports = isAdmin;

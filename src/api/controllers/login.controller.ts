@@ -64,7 +64,38 @@ export const doctorLogin = async (
       throw new Error("SECRET_KEY is not defined in the config");
     }
 
-    const token = jwt.sign({ doctorId: findDoctor._id }, config.SECRET_KEY);
+    const token = jwt.sign(
+      { doctorId: findDoctor._id, role: findDoctor.role },
+      config.SECRET_KEY
+    );
+    res.status(200).json({ token });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// admin login
+
+export const adminLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const Admin = {
+      username: "admin",
+      password: "admin",
+    };
+    const { username, password } = req.body;
+
+    if (username !== Admin.username || password !== Admin.password)
+      return res.status(403).json({ message: "You are not admin" });
+
+    if (!config.SECRET_KEY) {
+      throw new Error("SECRET_KEY is not defined in the config");
+    }
+
+    const token = jwt.sign({ role: "admin" }, config.SECRET_KEY);
     res.status(200).json({ token });
   } catch (error) {
     next(error);

@@ -26,28 +26,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isAuth = void 0;
 const jsonwebtoken_1 = __importStar(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../../config/config"));
-const custom_error_1 = require("../utils/custom-error");
 const isAuth = async (req, res, next) => {
     const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
     if (!token) {
-        return new custom_error_1.CustomError("Invalid token", 403);
+        return res.status(401).json({ message: "Invalid token" });
     }
     jsonwebtoken_1.default.verify(token, config_1.default.SECRET_KEY, (err, data) => {
         if (err) {
             if (err instanceof jsonwebtoken_1.JsonWebTokenError) {
-                return new custom_error_1.CustomError("Invalid token!", 401);
+                return res.status(401).json({ message: "Invalid token!" });
             }
             else if (err instanceof jsonwebtoken_1.TokenExpiredError) {
-                return new custom_error_1.CustomError("Token", 403);
+                return res.status(401).json({ message: "Token" });
             }
             else {
-                return new custom_error_1.CustomError("Internal server error", 500);
+                return res.status(500).json({ message: "Internal server error" });
             }
         }
         req.verified = data;
         next();
     });
 };
-exports.default = isAuth;
+exports.isAuth = isAuth;

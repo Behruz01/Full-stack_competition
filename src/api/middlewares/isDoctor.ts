@@ -1,20 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomError } from "../utils/custom-error";
 interface DoctorRequest extends Request {
   verified?: {
     role: string;
   };
 }
 
-const isDoctor = async (
+export const isDoctor = async (
   req: DoctorRequest,
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.verified || req.verified.role !== "Doctor") {
-    return new CustomError("You are not Doctor", 400);;
+  
+  if (!req.verified || req.verified.role !== "doctor") {
+    return res.status(400).json({ message: "You are not Doctor" });
   }
   next();
 };
 
-module.exports = isDoctor;

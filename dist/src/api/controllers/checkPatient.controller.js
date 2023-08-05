@@ -8,7 +8,7 @@ const Inspection_1 = __importDefault(require("../../models/Inspection"));
 const Patient_1 = __importDefault(require("../../models/Patient"));
 const getCheckPaint = async (req, res, next) => {
     try {
-        const { doctorId } = req;
+        const { verified: doctorId } = req;
         const patients = await Inspection_1.default.find({ doctor: doctorId }).sort({
             createdAt: "asc",
         });
@@ -23,7 +23,7 @@ exports.getCheckPaint = getCheckPaint;
 //
 const getOnePatientInfo = async (req, res, next) => {
     try {
-        const { doctorId } = req;
+        const { verified: doctorId } = req;
         const { patientId } = req.params;
         const inspections = await Inspection_1.default.find({
             $and: [{ patient: patientId }, { doctor: doctorId }],
@@ -39,7 +39,6 @@ exports.getOnePatientInfo = getOnePatientInfo;
 // create inspection and image
 const createInspection = async (req, res, next) => {
     try {
-        const { doctorId } = req;
         const { inspectionId } = req.params;
         const { imageName: image } = req;
         const { inspection_desc } = req.body;
@@ -61,7 +60,7 @@ exports.createInspection = createInspection;
 // the next one
 const theNextInspection = async (req, res, next) => {
     try {
-        const { doctorId } = req;
+        const { verified: doctorId } = req;
         const now = await Inspection_1.default.find({ doctor: doctorId }).sort({
             createdAt: "asc",
         });

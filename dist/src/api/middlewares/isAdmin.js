@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const custom_error_1 = require("../utils/custom-error");
+exports.isAdmin = void 0;
 const isAdmin = async (req, res, next) => {
     if (!req.verified || req.verified.role !== "admin") {
-        return new custom_error_1.CustomError("You are not admin!", 400);
+        return res.status(400).json("You are not admin!");
     }
     next();
 };
-module.exports = isAdmin;
+exports.isAdmin = isAdmin;

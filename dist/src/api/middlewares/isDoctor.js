@@ -1,11 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const custom_error_1 = require("../utils/custom-error");
+exports.isDoctor = void 0;
 const isDoctor = async (req, res, next) => {
-    if (!req.verified || req.verified.role !== "Doctor") {
-        return new custom_error_1.CustomError("You are not Doctor", 400);
-        ;
+    if (!req.verified || req.verified.role !== "doctor") {
+        return res.status(400).json({ message: "You are not Doctor" });
     }
     next();
 };
-module.exports = isDoctor;
+exports.isDoctor = isDoctor;

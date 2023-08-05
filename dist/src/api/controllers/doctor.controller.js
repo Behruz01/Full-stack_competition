@@ -11,6 +11,9 @@ const createDoctor = async (req, res, next) => {
     try {
         const { imageName: image } = req;
         const { doctor_name, doctor_lname, doctor_phone_number, doctor_specialty, doctor_working_time, doctor_working_day, doctor_floor_no, doctor_room_no, doctor_qualification, doctor_clinic_address, } = req.body;
+        const findPhone = await Doctor_1.default.findOne({ doctor_phone_number });
+        if (findPhone)
+            return res.status(400).json({ message: "Phone number already exists" });
         Doctor_1.default.create({
             doctor_name,
             doctor_lname,
@@ -47,8 +50,9 @@ const updateDoctor = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { imageName: image } = req;
+        console.log(image);
         const { doctor_name, doctor_lname, doctor_phone_number, doctor_specialty, doctor_working_time, doctor_working_day, doctor_floor_no, doctor_room_no, doctor_qualification, doctor_clinic_address, } = req.body;
-        Doctor_1.default.findByIdAndUpdate(id, {
+        await Doctor_1.default.findByIdAndUpdate(id, {
             $set: {
                 doctor_name,
                 doctor_lname,
@@ -63,7 +67,7 @@ const updateDoctor = async (req, res, next) => {
                 image: image,
             },
         });
-        res.status(200).json({ message: "Created doctor" });
+        res.status(200).json({ message: "Updated doctor" });
     }
     catch (error) {
         next(error);
@@ -124,7 +128,7 @@ exports.searchDoctorsCategory = searchDoctorsCategory;
 // search by name or lname
 const searchDoctors = async (req, res, next) => {
     try {
-        const word = req.query;
+        const word = req.params;
         const doctors = await Doctor_1.default.find({
             $or: [{ doctor_name: word }, { doctor_lname: word }],
         });

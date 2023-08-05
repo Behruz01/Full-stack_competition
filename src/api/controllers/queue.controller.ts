@@ -3,8 +3,10 @@ import Doctor from "../../models/Doctor";
 import Inspection from "../../models/Inspection";
 import Patient from "../../models/Patient";
 
-interface CustomRequest {
-  patientId?: string;
+interface CustomRequest extends Request {
+  verified?: {
+    patientId?: string;
+  };
 }
 
 export const createQueue = async (
@@ -14,7 +16,7 @@ export const createQueue = async (
 ) => {
   try {
     const { id } = req.params;
-    const { patientId } = req as CustomRequest;
+    const { verified: patientId } = req as CustomRequest;
 
     Inspection.create({ doctor: id, patient: patientId });
 
@@ -34,7 +36,7 @@ export const getQueue = async (
 ) => {
   try {
     const { id } = req.params;
-    const { patientId } = req as CustomRequest;
+    const { verified: patientId } = req as CustomRequest;
 
     const doctor = await Doctor.findById(id);
     const queue = (await Inspection.find({ doctor: id })).length;

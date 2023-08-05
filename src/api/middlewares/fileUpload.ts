@@ -15,7 +15,7 @@ export const fileUpload = (
   if (req.files) {
     const image = req.files?.image;
     if (!image) return res.status(401).json({ message: "Image not found!" });
-
+    
     const extraname = path.extname(image.name);
     const imageName = `${uuid()}${extraname}`;
 
