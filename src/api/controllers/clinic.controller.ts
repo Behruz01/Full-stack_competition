@@ -113,3 +113,25 @@ export const getOneClinic = async (
     next(Error);
   }
 };
+// search
+
+export const searchClinic = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const word = req.params.word;
+
+    const clinics = await Clinic.find();
+
+    const filteredClinics = clinics.filter((clinic) =>
+      clinic.clinic_name.toLowerCase().includes(word.toLowerCase())
+    );
+
+    res.status(200).json({ clinics: filteredClinics });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};

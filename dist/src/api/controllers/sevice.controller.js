@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOneService = exports.deleteService = exports.updateService = exports.getServices = exports.createService = void 0;
+exports.searchService = exports.getOneService = exports.deleteService = exports.updateService = exports.getServices = exports.createService = void 0;
 const Service_1 = __importDefault(require("../../models/Service"));
 const createService = async (req, res, next) => {
     try {
@@ -84,3 +84,17 @@ const getOneService = async (req, res, next) => {
     }
 };
 exports.getOneService = getOneService;
+// search
+const searchService = async (req, res, next) => {
+    try {
+        const word = req.params.word;
+        const services = await Service_1.default.find();
+        const filteredService = services.filter((service) => service.service_name.toLowerCase().includes(word.toLowerCase()));
+        res.status(200).json({ service: filteredService });
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+exports.searchService = searchService;

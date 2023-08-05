@@ -11,4 +11,5 @@ router.get("/clinics", clinic_controller_1.getClinics);
 router.put("/clinics/:id", isAuth_1.isAuth, isAdmin_1.isAdmin, clinic_controller_1.updateClinic);
 router.delete("/clinics/:id", isAuth_1.isAuth, isAdmin_1.isAdmin, clinic_controller_1.deleteClinic);
 router.get("/clinics/:id", clinic_controller_1.getOneClinic);
+router.get("/clinics/search/:word", clinic_controller_1.searchClinic);
 exports.default = router;

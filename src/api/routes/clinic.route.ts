@@ -4,6 +4,7 @@ import {
   deleteClinic,
   getClinics,
   getOneClinic,
+  searchClinic,
   updateClinic,
 } from "../controllers/clinic.controller";
 import { fileUpload } from "../middlewares/fileUpload";
@@ -16,5 +17,6 @@ router.get("/clinics", getClinics);
 router.put("/clinics/:id", isAuth, isAdmin, updateClinic);
 router.delete("/clinics/:id", isAuth, isAdmin, deleteClinic);
 router.get("/clinics/:id", getOneClinic);
+router.get("/clinics/search/:word", searchClinic);
 
 export default router;

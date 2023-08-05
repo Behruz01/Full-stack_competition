@@ -129,10 +129,9 @@ exports.searchDoctorsCategory = searchDoctorsCategory;
 const searchDoctors = async (req, res, next) => {
     try {
         const word = req.params.word;
-        const doctors = await Doctor_1.default.find({
-            $or: [{ doctor_name: word }, { doctor_lname: word }],
-        });
-        res.status(200).json({ doctors });
+        const doctors = await Doctor_1.default.find();
+        const filteredDoctor = doctors.filter((doctor) => doctor.doctor_name.toLowerCase().includes(word.toLowerCase()));
+        res.status(200).json({ doctor: filteredDoctor });
     }
     catch (error) {
         console.log(error);

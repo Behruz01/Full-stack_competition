@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOneClinic = exports.deleteClinic = exports.updateClinic = exports.getClinics = exports.createClinic = void 0;
+exports.searchClinic = exports.getOneClinic = exports.deleteClinic = exports.updateClinic = exports.getClinics = exports.createClinic = void 0;
 const Clinic_1 = __importDefault(require("../../models/Clinic"));
 const Doctor_1 = __importDefault(require("../../models/Doctor"));
 const Service_1 = __importDefault(require("../../models/Service"));
@@ -90,3 +90,17 @@ const getOneClinic = async (req, res, next) => {
     }
 };
 exports.getOneClinic = getOneClinic;
+// search
+const searchClinic = async (req, res, next) => {
+    try {
+        const word = req.params.word;
+        const clinics = await Clinic_1.default.find();
+        const filteredClinics = clinics.filter((clinic) => clinic.clinic_name.toLowerCase().includes(word.toLowerCase()));
+        res.status(200).json({ clinics: filteredClinics });
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+exports.searchClinic = searchClinic;

@@ -104,3 +104,24 @@ export const getOneService = async (
     next(Error);
   }
 };
+// search
+export const searchService = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const word = req.params.word;
+
+    const services = await Service.find();
+
+    const filteredService = services.filter((service) =>
+      service.service_name.toLowerCase().includes(word.toLowerCase())
+    );
+
+    res.status(200).json({ service: filteredService });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};

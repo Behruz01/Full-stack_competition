@@ -185,11 +185,13 @@ export const searchDoctors = async (
   try {
     const word = req.params.word;
 
-    const doctors = await Doctor.find({
-      $or: [{ doctor_name: word }, { doctor_lname: word }],
-    });
+    const doctors = await Doctor.find();
 
-    res.status(200).json({ doctors });
+    const filteredDoctor = doctors.filter((doctor) =>
+      doctor.doctor_name.toLowerCase().includes(word.toLowerCase())
+    );
+
+    res.status(200).json({ doctor: filteredDoctor });
   } catch (error) {
     console.log(error);
     next(error);
