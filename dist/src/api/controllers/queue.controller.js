@@ -11,7 +11,7 @@ const createQueue = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { verified: patientId } = req;
-        Inspection_1.default.create({ doctor: id, patient: patientId });
+        Inspection_1.default.create({ doctor: id, patient: patientId?.patientId });
         res.status(201).json({ message: "Navbat olindi" });
     }
     catch (error) {
@@ -27,10 +27,10 @@ const getQueue = async (req, res, next) => {
         const { verified: patientId } = req;
         const doctor = await Doctor_1.default.findById(id);
         const queue = (await Inspection_1.default.find({ doctor: id })).length;
-        const patient = await Patient_1.default.findById(patientId);
+        const patient = await Patient_1.default.findById(patientId?.patientId);
         const inspection = (await Inspection_1.default.find({
             $and: [
-                { patient: patientId },
+                { patient: patientId?.patientId },
                 { inspection_status: "checked" },
                 { doctor: id },
             ],

@@ -18,7 +18,7 @@ export const createQueue = async (
     const { id } = req.params;
     const { verified: patientId } = req as CustomRequest;
 
-    Inspection.create({ doctor: id, patient: patientId });
+    Inspection.create({ doctor: id, patient: patientId?.patientId });
 
     res.status(201).json({ message: "Navbat olindi" });
   } catch (error) {
@@ -40,11 +40,11 @@ export const getQueue = async (
 
     const doctor = await Doctor.findById(id);
     const queue = (await Inspection.find({ doctor: id })).length;
-    const patient = await Patient.findById(patientId);
+    const patient = await Patient.findById(patientId?.patientId);
     const inspection = (
       await Inspection.find({
         $and: [
-          { patient: patientId },
+          { patient: patientId?.patientId },
           { inspection_status: "checked" },
           { doctor: id },
         ],

@@ -183,7 +183,7 @@ export const searchDoctors = async (
   next: NextFunction
 ) => {
   try {
-    const word = req.params;
+    const word = req.params.word;
 
     const doctors = await Doctor.find({
       $or: [{ doctor_name: word }, { doctor_lname: word }],

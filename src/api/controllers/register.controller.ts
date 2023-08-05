@@ -23,11 +23,10 @@ export const registerController = async (
 
     if (findPatient)
       return res.status(403).json({ message: "Patient already exists" });
-    console.log(findPatient);
 
     const hashPass = await bcrypt.hash(patient_password, 10);
 
-    Patient.create({
+    const patient = await Patient.create({
       patient_name,
       patient_lname,
       patient_age,
@@ -38,10 +37,13 @@ export const registerController = async (
     if (!config.SECRET_KEY) {
       throw new Error("SECRET_KEY is not defined in the config");
     }
-    const token = jwt.sign({ email: patient_email }, config.SECRET_KEY);
+    const patientId = patient?._id?.toString();
+
+    const token = jwt.sign({ patientId }, config.SECRET_KEY);
 
     res.status(201).json({ token });
   } catch (error) {
     next(error);
   }
 };
+

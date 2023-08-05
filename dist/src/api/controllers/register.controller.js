@@ -14,9 +14,8 @@ const registerController = async (req, res, next) => {
         const findPatient = await Patient_1.default.findOne({ patient_email });
         if (findPatient)
             return res.status(403).json({ message: "Patient already exists" });
-        console.log(findPatient);
         const hashPass = await bcrypt_1.default.hash(patient_password, 10);
-        Patient_1.default.create({
+        const patient = await Patient_1.default.create({
             patient_name,
             patient_lname,
             patient_age,
@@ -27,7 +26,8 @@ const registerController = async (req, res, next) => {
         if (!config_1.default.SECRET_KEY) {
             throw new Error("SECRET_KEY is not defined in the config");
         }
-        const token = jsonwebtoken_1.default.sign({ email: patient_email }, config_1.default.SECRET_KEY);
+        const patientId = patient?._id?.toString();
+        const token = jsonwebtoken_1.default.sign({ patientId }, config_1.default.SECRET_KEY);
         res.status(201).json({ token });
     }
     catch (error) {

@@ -13,5 +13,5 @@ router.put("/doctor/:id", isAuth_1.isAuth, isDoctor_1.isDoctor, fileUpload_1.fil
 router.delete("/doctor/:id", isAuth_1.isAuth, isAdmin_1.isAdmin, doctor_controller_1.deleteDoctor);
 router.get("/doctor/:id", doctor_controller_1.getOneDoctor);
 router.post("/doctors/:category", doctor_controller_1.searchDoctorsCategory);
-router.post("/doctors/:word", doctor_controller_1.searchDoctors);
+router.get("/doctors/search/:word", doctor_controller_1.searchDoctors);
 exports.default = router;

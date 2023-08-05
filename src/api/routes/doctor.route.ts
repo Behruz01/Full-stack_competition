@@ -20,6 +20,6 @@ router.put("/doctor/:id", isAuth, isDoctor,fileUpload, updateDoctor);
 router.delete("/doctor/:id", isAuth, isAdmin, deleteDoctor);
 router.get("/doctor/:id", getOneDoctor);
 router.post("/doctors/:category", searchDoctorsCategory);
-router.post("/doctors/:word", searchDoctors);
+router.get("/doctors/search/:word", searchDoctors);
 
 export default router;

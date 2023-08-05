@@ -128,7 +128,7 @@ exports.searchDoctorsCategory = searchDoctorsCategory;
 // search by name or lname
 const searchDoctors = async (req, res, next) => {
     try {
-        const word = req.params;
+        const word = req.params.word;
         const doctors = await Doctor_1.default.find({
             $or: [{ doctor_name: word }, { doctor_lname: word }],
         });
