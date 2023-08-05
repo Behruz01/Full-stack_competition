@@ -7,6 +7,10 @@ exports.searchDoctors = exports.searchDoctorsCategory = exports.getOneDoctor = e
 const Doctor_1 = __importDefault(require("../../models/Doctor"));
 const Inspection_1 = __importDefault(require("../../models/Inspection"));
 const Patient_1 = __importDefault(require("../../models/Patient"));
+const validatePhoneNumber = (phoneNumber) => {
+    const regex = /^\+9989\d{8}$/;
+    return regex.test(phoneNumber);
+};
 const createDoctor = async (req, res, next) => {
     try {
         const { imageName: image } = req;
@@ -14,6 +18,12 @@ const createDoctor = async (req, res, next) => {
         const findPhone = await Doctor_1.default.findOne({ doctor_phone_number });
         if (findPhone)
             return res.status(400).json({ message: "Phone number already exists" });
+        //
+        const isvalid = validatePhoneNumber(doctor_phone_number);
+        if (!isvalid)
+            return res
+                .status(400)
+                .json({ message: "To'g'ri telefon raqam kiriting!" });
         Doctor_1.default.create({
             doctor_name,
             doctor_lname,
@@ -52,6 +62,11 @@ const updateDoctor = async (req, res, next) => {
         const { imageName: image } = req;
         console.log(image);
         const { doctor_name, doctor_lname, doctor_phone_number, doctor_specialty, doctor_working_time, doctor_working_day, doctor_floor_no, doctor_room_no, doctor_qualification, doctor_clinic_address, } = req.body;
+        const isvalid = validatePhoneNumber(doctor_phone_number);
+        if (!isvalid)
+            return res
+                .status(400)
+                .json({ message: "To'g'ri telefon raqam kiriting!" });
         await Doctor_1.default.findByIdAndUpdate(id, {
             $set: {
                 doctor_name,

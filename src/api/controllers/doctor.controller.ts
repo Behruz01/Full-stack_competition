@@ -6,6 +6,11 @@ import Patient from "../../models/Patient";
 interface CustomRequest extends Request {
   imageName: string;
 }
+
+const validatePhoneNumber = (phoneNumber: string): boolean => {
+  const regex = /^\+9989\d{8}$/;
+  return regex.test(phoneNumber);
+};
 export const createDoctor = async (
   req: Request,
   res: Response,
@@ -29,6 +34,14 @@ export const createDoctor = async (
     const findPhone = await Doctor.findOne({ doctor_phone_number });
     if (findPhone)
       return res.status(400).json({ message: "Phone number already exists" });
+
+    //
+
+    const isvalid = validatePhoneNumber(doctor_phone_number);
+    if (!isvalid)
+      return res
+        .status(400)
+        .json({ message: "To'g'ri telefon raqam kiriting!" });
     Doctor.create({
       doctor_name,
       doctor_lname,
@@ -88,6 +101,11 @@ export const updateDoctor = async (
       doctor_clinic_address,
     } = req.body;
 
+    const isvalid = validatePhoneNumber(doctor_phone_number);
+    if (!isvalid)
+      return res
+        .status(400)
+        .json({ message: "To'g'ri telefon raqam kiriting!" });
     await Doctor.findByIdAndUpdate(id, {
       $set: {
         doctor_name,
